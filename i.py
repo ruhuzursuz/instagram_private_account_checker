@@ -15,6 +15,7 @@ import time
 
 hesaplar = []
 uyuma_suresi = 300 #kaç saniyede 1 çalışsın
+query_hash = "f2405b236d85e8296cf30347c9f08c2a" #kendin için bul geliştirici araçlarından. foto bakmak için olanından
 
 
 with open("hesaplar.txt","r") as oku:
@@ -77,7 +78,6 @@ while True:
                     indir(gorseller)
                 
                 if end_cursor is not None:
-                    query_hash = "f2405b236d85e8296cf30347c9f08c2a"
                     variables = '{"id":'+hesap_id+',"first":12,"after":"'+end_cursor+'"}'
                     instagram_gis = calculate_x_instagram_gis(rhx_gis,variables)
                     payload = {"query_hash": query_hash,"variables" : variables}
