@@ -58,7 +58,6 @@ while True:
         script = re.findall('window._sharedData = (.*?);',response.text)[0]
         data = json.loads(script)
         rhx_gis = data["rhx_gis"]
-        csrf_token = data["config"]["csrf_token"]
         json_data = data["entry_data"]["ProfilePage"][0]["graphql"]["user"]
         gizli_mi = json_data["is_private"]
         if not gizli_mi:
