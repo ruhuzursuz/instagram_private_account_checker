@@ -15,7 +15,7 @@ import time
 
 hesaplar = []
 uyuma_suresi = 300 #kaç saniyede 1 çalışsın
-query_hash = "f2405b236d85e8296cf30347c9f08c2a" #kendin için bul geliştirici araçlarından. foto bakmak için olanından
+query_hash = "f2405b236d85e8296cf30347c9f08c2a"
 
 
 with open("hesaplar.txt","r") as oku:
