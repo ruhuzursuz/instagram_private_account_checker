@@ -9,7 +9,7 @@ import time
 # cmd'yi açıp "pip install requests" ile kurabilirsin
 
 # scriptin olduğu yere hesaplar.txt dosyası oluştur
-# gözlemek istediğim hesapların linklerini alt alta yaz
+# gözlemek istediğin hesapların linklerini alt alta yaz
 
 # bence çok gereksiz bir çaba bu. ama neyse.
 
