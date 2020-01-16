@@ -13,19 +13,13 @@ import time
 
 # bence çok gereksiz bir çaba bu. ama neyse.
 
-hesaplar = []
 uyuma_suresi = 300 #kaç saniyede 1 çalışsın
 query_hash = "f2405b236d85e8296cf30347c9f08c2a"
 
 
 with open("hesaplar.txt","r") as oku:
-    for satir in oku:
-        hesaplar.append(satir.strip())
+    hesaplar = oku.read().splitlines()
 
-def calculate_x_instagram_gis(rhx_gis, variables):
-    text = rhx_gis + ":" + variables
-    x_i_gis = hashlib.md5(text.encode()).hexdigest()
-    return x_i_gis
 
 def indir(gorseller):
     for gorsel in gorseller:
@@ -46,19 +40,18 @@ def indir(gorseller):
             with open(gorsel_yolu,"wb") as yaz:
                 yaz.write(response.content)
             print(gorsel["node"]["shortcode"] + uzanti + " kaydedildi")
+ 
+s = requests.Session()
+response = s.get("https://instagram.com/")
+csrf_token = re.search('"csrf_token":"(.*?)"', response.text)[1]
+s.headers.update({"X-CSRFToken": csrf_token})
 
 while True:
-
-    s = requests.Session()
-    headers = {"user-agent": "Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36 OPR/58.0.3135.127"}
-    s.headers.update(headers)
-
-
+    
     for hesap in hesaplar:
         response = s.get(hesap)
-        script = re.findall('window._sharedData = (.*?);',response.text)[0]
+        script = re.search('window._sharedData = (.*?);',response.text)[1]
         data = json.loads(script)
-        rhx_gis = data["rhx_gis"]
         json_data = data["entry_data"]["ProfilePage"][0]["graphql"]["user"]
         gizli_mi = json_data["is_private"]
         if not gizli_mi:
@@ -79,10 +72,7 @@ while True:
                 
                 if end_cursor is not None:
                     variables = '{"id":'+hesap_id+',"first":12,"after":"'+end_cursor+'"}'
-                    instagram_gis = calculate_x_instagram_gis(rhx_gis,variables)
                     payload = {"query_hash": query_hash,"variables" : variables}
-                    headers = {"user-agent": "Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36 OPR/58.0.3135.127","x-instagram-gis": instagram_gis}
-                    s.headers.update(headers)
                     response = s.get("https://www.instagram.com/graphql/query/?", params = payload).json()
                     gorseller = response["data"]["user"]["edge_owner_to_timeline_media"]["edges"]
                     indir(gorseller)
